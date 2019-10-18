@@ -10,5 +10,5 @@ package AuctionNetwork;
  * @author Pumkin
  */
 public class AuctionServer {
-    
+    private Auctioner auctioner;
 }
