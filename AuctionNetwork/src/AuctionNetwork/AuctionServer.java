@@ -5,10 +5,18 @@
  */
 package AuctionNetwork;
 
+import Server.AbstractServer;
+
 /**
  *
  * @author Pumkin
  */
-public class AuctionServer {
+public class AuctionServer extends AbstractServer{
     private Auctioner auctioner;
+    private AuctionItem auctionItem;
+    private String log;
+    
+    String evaluate(String msg){
+        return msg;
+    }
 }
