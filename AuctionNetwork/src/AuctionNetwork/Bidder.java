@@ -5,13 +5,14 @@
  */
 package AuctionNetwork;
 
+import ObserverPattern.IObserver;
 import java.util.ArrayList;
 
 /**
  *
  * @author Pumkin
  */
-public class BidderClient {
+public class Bidder implements IObserver{
     
     private String username;
     private ArrayList<AuctionServer> auctions;
@@ -40,9 +41,14 @@ public class BidderClient {
         }
     }
 
-    public BidderClient(String username) {
+    public Bidder(String username) {
         this.username = username;
         this.auctions = new ArrayList<>();
+    }
+
+    @Override
+    public void notifyObserver(String command, Object source) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

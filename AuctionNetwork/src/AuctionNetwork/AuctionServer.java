@@ -6,17 +6,25 @@
 package AuctionNetwork;
 
 import Server.AbstractServer;
+import Server.AbstractMessage;
 
 /**
  *
  * @author Pumkin
  */
 public class AuctionServer extends AbstractServer{
-    private Auctioner auctioner;
-    private AuctionItem auctionItem;
+    private Auction auction;
+    private Bidder bidder;
     private String log;
-    
-    String evaluate(String msg){
-        return msg;
+
+
+    @Override
+    public AbstractMessage evaluate(AbstractMessage msg) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean finish(AbstractMessage msg) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

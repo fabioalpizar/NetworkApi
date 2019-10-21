@@ -24,29 +24,33 @@ public abstract class AbstractServer {
         server = new ServerSocket(port);
         while(true){
             Socket socketListener = server.accept();
-            String msg = listen(socketListener);
-            String reply = evaluate(msg);
+            AbstractMessage msg = listen(socketListener);
+            AbstractMessage reply = evaluate(msg);
             respond(reply, socketListener);
-            if(msg.equalsIgnoreCase("end")) break;
             socketListener.close();
+            if(finish(reply)) break;
         }
         System.out.println("Shutting down server.");
         server.close();
     }
     
-    private String listen(Socket socketListener) throws IOException, ClassNotFoundException{
+    private AbstractMessage listen(Socket socketListener) throws IOException, ClassNotFoundException{
         ObjectInputStream ois = new ObjectInputStream(socketListener.getInputStream());
-        String msg = (String) ois.readObject();
+        AbstractMessage msg = (AbstractMessage) ois.readObject();
         ois.close();
         return msg;
     }
-    private String evaluate(String msg){
-        return msg;
-    }
-    private void respond(String reply, Socket socketListener) throws IOException{
+    
+    public abstract AbstractMessage evaluate(AbstractMessage msg);
+    
+    public abstract boolean finish(AbstractMessage msg);
+    
+    private void respond(AbstractMessage reply, Socket socketListener) throws IOException{
         ObjectOutputStream oos = new ObjectOutputStream(socketListener.getOutputStream());
         oos.writeObject(reply);
         oos.close();
     }
+    
+    
     
 }
