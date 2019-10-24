@@ -5,21 +5,83 @@
  */
 package AuctionNetwork;
 
-import ObserverPattern.IObserver;
+import ObserverPattern.AbstractObservable;
+import java.util.ArrayList;
 
 /**
  *
  * @author Pumkin
  */
-public class Auction implements IObserver{
+public class Auction extends AbstractObservable{
     
     private AuctionItem item;
     private Auctioner auctioner;
+    private ArrayList<Bidder> bidders;
+    private Bidder currentHiBidder;
 
-    @Override
-    public void notifyObserver(String command, Object source) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Auction(AuctionItem item, Auctioner auctioner) {
+        this.item = item;
+        this.auctioner = auctioner;
+        this.bidders = new ArrayList<>();
+        this.currentHiBidder = null;
     }
+
+    public AuctionItem getItem() {
+        return item;
+    }
+
+    public void setItem(AuctionItem item) {
+        this.item = item;
+    }
+
+    public Auctioner getAuctioner() {
+        return auctioner;
+    }
+
+    public void setAuctioner(Auctioner auctioner) {
+        this.auctioner = auctioner;
+    }
+
+    public ArrayList<Bidder> getBidders() {
+        return bidders;
+    }
+
+    public void addBidder(Bidder bidder) {
+        this.bidders.add(bidder);
+        notifyAllObservers("bidderJoined", this);
+    }
+    
+    public void removeBidder(String bidder) {
+        for (int i=0; i < this.bidders.size(); i++){
+            if(this.bidders.get(i).getUsername().equalsIgnoreCase(bidder)){
+               this.bidders.remove(i);
+            }
+        } 
+        notifyAllObservers("bidderLeft", this);
+    }
+    
+    public void setFinalPrice(double price){
+        this.item.setFinalPrice(price);
+        notifyAllObservers("newFinalPrice", this);
+    }
+    
+    public double getFinalPrice(){
+        return this.item.getFinalPrice();
+    }
+
+    public Bidder getCurrentHiBidder() {
+        return currentHiBidder;
+    }
+
+    public void setCurrentHiBidder(String bidder) {
+        for (int i=0; i < this.bidders.size(); i++){
+            if(this.bidders.get(i).getUsername().equalsIgnoreCase(bidder)){
+               this.currentHiBidder = this.bidders.get(i);
+            }
+        }
+        notifyAllObservers("newHiBidder", this);
+    }
+    
     
     
 }

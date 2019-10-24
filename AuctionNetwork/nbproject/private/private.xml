@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Pumkin/Documents/Progras/Diseño/NetworkApi/NetworkApi/AuctionNetwork/src/GUI/InitAuctionFrame.java</file>
-            <file>file:/C:/Users/Pumkin/Documents/Progras/Diseño/NetworkApi/NetworkApi/AuctionNetwork/src/Observers/ConfigurationManager.java</file>
-            <file>file:/C:/Users/Pumkin/Documents/Progras/Diseño/NetworkApi/NetworkApi/AuctionNetwork/src/GUI/InitBidderFrame.java</file>
+            <file>file:/C:/Users/Pumkin/Documents/Progras/Diseño/NetworkApi/NetworkApi/AuctionNetwork/src/AuctionNetwork/Auctioner.java</file>
             <file>file:/C:/Users/Pumkin/Documents/Progras/Diseño/NetworkApi/NetworkApi/AuctionNetwork/src/AuctionNetwork/AuctionServer.java</file>
-            <file>file:/C:/Users/Pumkin/Documents/Progras/Diseño/NetworkApi/NetworkApi/AuctionNetwork/src/Observers/DateFormatObserver.java</file>
-            <file>file:/C:/Users/Pumkin/Documents/Progras/Diseño/NetworkApi/NetworkApi/AuctionNetwork/src/AuctionNetwork/AuctionItem.java</file>
-            <file>file:/C:/Users/Pumkin/Documents/Progras/Diseño/NetworkApi/NetworkApi/AuctionNetwork/src/GUI/LoginFrame.java</file>
+            <file>file:/C:/Users/Pumkin/Documents/Progras/Diseño/NetworkApi/NetworkApi/AuctionNetwork/src/AuctionNetwork/Auction.java</file>
+            <file>file:/C:/Users/Pumkin/Documents/Progras/Diseño/NetworkApi/NetworkApi/AuctionNetwork/src/AuctionNetwork/Bidder.java</file>
         </group>
     </open-files>
 </project-private>

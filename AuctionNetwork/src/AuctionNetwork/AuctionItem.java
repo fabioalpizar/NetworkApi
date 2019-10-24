@@ -12,8 +12,8 @@ package AuctionNetwork;
 public class AuctionItem {
     private String name;
     private String description;
-    private double  initialPrice;
-    private double  finalPrice;
+    private double initialPrice;
+    private double finalPrice;
 
     public String getName() {
         return name;

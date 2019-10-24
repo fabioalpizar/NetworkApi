@@ -5,16 +5,16 @@
  */
 package AuctionNetwork;
 
+import ObserverPattern.IObserver;
+
 /**
  *
  * @author Pumkin
  */
-public class Auctioner {
+public class Auctioner implements IObserver{
     
     private String username;
-    private AuctionItem auctionItem;
-    private int port;
-
+    
     public String getUsername() {
         return username;
     }
@@ -23,26 +23,13 @@ public class Auctioner {
         this.username = username;
     }
 
-    public AuctionItem getAuctionItem() {
-        return auctionItem;
-    }
-
-    public void setAuctionItem(AuctionItem auctionItem) {
-        this.auctionItem = auctionItem;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public Auctioner(String username, AuctionItem auctionItem, int port) {
+    public Auctioner(String username) {
         this.username = username;
-        this.auctionItem = auctionItem;
-        this.port = port;
+    }
+
+    @Override
+    public void notifyObserver(String command, Object source) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     
