@@ -10,6 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 /**
  *
@@ -24,8 +25,8 @@ public abstract class AbstractServer {
         server = new ServerSocket(port);
         while(true){
             Socket socketListener = server.accept();
-            AbstractMessage msg = listen(socketListener);
-            AbstractMessage reply = evaluate(msg);
+            String msg = listen(socketListener);
+            String reply = evaluate(msg);
             respond(reply, socketListener);
             socketListener.close();
             if(finish(reply)) break;
@@ -34,18 +35,18 @@ public abstract class AbstractServer {
         server.close();
     }
     
-    private AbstractMessage listen(Socket socketListener) throws IOException, ClassNotFoundException{
+    private String listen(Socket socketListener) throws IOException, ClassNotFoundException{
         ObjectInputStream ois = new ObjectInputStream(socketListener.getInputStream());
-        AbstractMessage msg = (AbstractMessage) ois.readObject();
+        String msg = (String) ois.readObject();
         ois.close();
         return msg;
     }
     
-    public abstract AbstractMessage evaluate(AbstractMessage msg);
+    public abstract String evaluate(String msg);
     
-    public abstract boolean finish(AbstractMessage msg);
+    public abstract boolean finish(String msg);
     
-    private void respond(AbstractMessage reply, Socket socketListener) throws IOException{
+    private void respond(String reply, Socket socketListener) throws IOException{
         ObjectOutputStream oos = new ObjectOutputStream(socketListener.getOutputStream());
         oos.writeObject(reply);
         oos.close();
