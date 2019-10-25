@@ -19,36 +19,37 @@ import java.util.Scanner;
 public abstract class AbstractClient {
    
         
-    void startClient() throws IOException, ClassNotFoundException{
+    public void startClient() throws IOException, ClassNotFoundException{
+        
+        System.out.println("Client started.");
         
         InetAddress host = InetAddress.getLocalHost();
+        Scanner scanner = new Scanner(System.in);
         Socket socket = new Socket(host.getHostName(), 9876);
+        
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
         ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
         
-        Scanner scanner = new Scanner(System.in);
-        
         while(true){
-
-            //write to socket using ObjectOutputStream
             
-            if(scanner.hasNext())
-            {
-                oos.write(scanner.nextLine().getBytes());
-                oos.flush();
-            }
+            String msg = evaluate(scanner.next());
+            oos.writeObject(msg);
+            oos.flush();
             
             //read the server response message
             
             String received = (String) ois.readObject();
-            System.out.println("Message: " + received);
+            String reply = evaluate(received);
+            oos.writeObject(reply);
             
-            //close resources
-            ois.close();
-            oos.close();
-            
-            if(finish(received)) break;
+            if(finish(received)){
+                break;
+            }
         }
+        //close resources
+        ois.close();
+        oos.close();
+        System.out.println("Client stopped.");
     }
 
     public abstract String evaluate(String msg);

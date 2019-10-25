@@ -17,6 +17,7 @@ public class Auction extends AbstractObservable{
     private AuctionItem item;
     private Auctioner auctioner;
     private ArrayList<Bidder> bidders;
+    private double currentHiPrice;
     private Bidder currentHiBidder;
 
     public Auction(AuctionItem item, Auctioner auctioner) {
@@ -24,6 +25,7 @@ public class Auction extends AbstractObservable{
         this.auctioner = auctioner;
         this.bidders = new ArrayList<>();
         this.currentHiBidder = null;
+        addObserver(auctioner);
     }
 
     public AuctionItem getItem() {
@@ -48,6 +50,7 @@ public class Auction extends AbstractObservable{
 
     public void addBidder(Bidder bidder) {
         this.bidders.add(bidder);
+        addObserver(bidder);
         notifyAllObservers("bidderJoined", this);
     }
     
@@ -55,9 +58,9 @@ public class Auction extends AbstractObservable{
         for (int i=0; i < this.bidders.size(); i++){
             if(this.bidders.get(i).getUsername().equalsIgnoreCase(bidder)){
                this.bidders.remove(i);
+               removeObserver(bidders.get(i));
             }
         } 
-        notifyAllObservers("bidderLeft", this);
     }
     
     public void setFinalPrice(double price){
@@ -81,7 +84,17 @@ public class Auction extends AbstractObservable{
         }
         notifyAllObservers("newHiBidder", this);
     }
-    
-    
+
+    public double getCurrentHiPrice() {
+        return currentHiPrice;
+    }
+
+    public void setCurrentHiPrice(double currentHiPrice) {
+        this.currentHiPrice = currentHiPrice;
+    }
+
+    public void finishAuction() {
+        notifyAllObservers("finishAuction", this);
+    }
     
 }

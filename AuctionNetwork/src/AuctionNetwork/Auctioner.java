@@ -29,7 +29,18 @@ public class Auctioner implements IObserver{
 
     @Override
     public void notifyObserver(String command, Object source) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Auction auct = (Auction) source;
+        switch(command){
+            case "bidderJoined":
+                System.out.println(auct.getBidders().get(auct.getBidders().size()-1) + " joined the auction.");
+                break;
+            case "newHiBidder":
+                System.out.println("Current highest bid: " + auct.getCurrentHiBidder()
+                + "\nby bidder: " + auct.getCurrentHiBidder());
+                break;
+            default:
+              break;
+        }
     }
     
     

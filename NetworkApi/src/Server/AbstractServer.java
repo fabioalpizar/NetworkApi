@@ -11,6 +11,8 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,24 +23,21 @@ public abstract class AbstractServer {
     private static ServerSocket server;
     private static int port = 9876;
     
-    void startServer() throws IOException, ClassNotFoundException{
+    public void startServer() throws IOException, ClassNotFoundException{
+        System.out.println("Server started.");
         server = new ServerSocket(port);
         while(true){
+            System.out.println("Waiting....");
             Socket socketListener = server.accept();
-            String msg = listen(socketListener);
-            String reply = evaluate(msg);
-            respond(reply, socketListener);
-            socketListener.close();
-            if(finish(reply)) break;
+            
+            new serverThread(socketListener).start();
+            System.out.println("New connection started.");
+            
         }
-        System.out.println("Shutting down server.");
-        server.close();
     }
     
-    private String listen(Socket socketListener) throws IOException, ClassNotFoundException{
-        ObjectInputStream ois = new ObjectInputStream(socketListener.getInputStream());
+    private String listen(ObjectInputStream ois) throws IOException, ClassNotFoundException{
         String msg = (String) ois.readObject();
-        ois.close();
         return msg;
     }
     
@@ -46,12 +45,47 @@ public abstract class AbstractServer {
     
     public abstract boolean finish(String msg);
     
-    private void respond(String reply, Socket socketListener) throws IOException{
-        ObjectOutputStream oos = new ObjectOutputStream(socketListener.getOutputStream());
+    private void respond(String reply, ObjectOutputStream oos) throws IOException{
         oos.writeObject(reply);
-        oos.close();
     }
     
-    
+    public class serverThread extends Thread{
+        protected Socket socketListener;
+
+        public serverThread(Socket socketListener) {
+            this.socketListener = socketListener;
+        }
+        
+        public void run(){
+            try{    
+                ObjectInputStream ois = new ObjectInputStream(socketListener.getInputStream());
+                ObjectOutputStream oos = new ObjectOutputStream(socketListener.getOutputStream());
+                while(true){
+
+                    String msg = listen(ois);
+                    
+                    System.out.println(msg);
+                    
+                    String reply = evaluate(msg);
+                    respond(reply, oos);
+
+                    System.out.println(reply);
+
+                    if(finish(reply)){
+                        break;
+                    }
+ 
+                }
+                ois.close();
+                oos.close();
+                return;
+            
+            }catch (IOException e) {
+            }   catch (ClassNotFoundException ex) {
+                Logger.getLogger(AbstractServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        }
+    }
     
 }

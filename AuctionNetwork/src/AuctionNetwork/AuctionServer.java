@@ -7,8 +7,10 @@ package AuctionNetwork;
 
 import Server.AbstractServer;
 import Server.AbstractMessage;
+import com.google.gson.Gson;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,9 +39,10 @@ public class AuctionServer extends AbstractServer{
 
     public void printLog() {
         Date date = new Date();
-        String fileName = "AuctLog: " + date.toString() + ".txt";
+        String dateStr = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(date);
+        String fileName = "AuctLog-" + dateStr + ".txt";
         try {
-            FileUtils.writeStringToFile(new File(fileName), this.log);
+            FileUtils.writeStringToFile(new File(fileName), log);
         } catch (IOException ex) {
             Logger.getLogger(AuctionServer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -54,19 +57,19 @@ public class AuctionServer extends AbstractServer{
         String reply = "";
         String[] comms = msg.split("/");
         switch(comms[0]){
+            case "join":
+                reply = "joined";
+                break;
             case "bid":
-                int bidPrice = Integer.parseInt(comms[1]);
-                if(bidPrice > this.auction.getFinalPrice()){
-                    this.auction.setFinalPrice(bidPrice);
+                double bidPrice = Double.parseDouble(comms[1]);
+                if(bidPrice > this.auction.getCurrentHiPrice()){
+                    this.auction.setCurrentHiPrice(bidPrice);
                     this.auction.setCurrentHiBidder(username);
                 }
                 break;
             case "leave":
                 String bidder = username;
                 this.auction.removeBidder(bidder);
-              break;
-            case "chat":
-                reply = comms[1];
               break;
             default:
               break;
@@ -76,18 +79,23 @@ public class AuctionServer extends AbstractServer{
     
     
     private String auctionerEval(String msg) throws InterruptedException{
+        System.out.println(msg);
         String reply = "";
         switch(msg){
             case "accept":
-                int bidPrice = Integer.parseInt(msg);
-                if(bidPrice > this.auction.getFinalPrice()){
-                    this.auction.setFinalPrice(bidPrice);
+                if(auction.getCurrentHiPrice() > this.auction.getFinalPrice()){
+                    this.auction.setFinalPrice(auction.getCurrentHiPrice());
                 }
                 break;
             case "wait":
+                reply = "Auctioner is thinking...";
                 Thread.sleep(10000);
-                reply = "Auctioner is thinking...";                
+                break;                
+            case "show":
+                reply = this.getAuction().getItem().toStringItemLink();
+                break;
             case "end":
+                this.auction.finishAuction();
                 reply = "end";
               break;
             default:
@@ -98,6 +106,7 @@ public class AuctionServer extends AbstractServer{
     
     @Override
     public String evaluate(String msg) {
+        setLog(msg);
         String reply = "";
         String[] initMsg = msg.split("-");
         if(initMsg[0].equalsIgnoreCase(this.auction.getAuctioner().getUsername())){
@@ -106,6 +115,10 @@ public class AuctionServer extends AbstractServer{
             } catch (InterruptedException ex) {
                 Logger.getLogger(AuctionServer.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }else if(initMsg[0].equalsIgnoreCase("add")){
+            Gson gson = new Gson();
+            Bidder bidder = gson.fromJson(initMsg[1], Bidder.class);
+            this.auction.addBidder(bidder);
         }else{
             reply = bidderEval(initMsg[0], initMsg[1]);
         }
@@ -116,9 +129,9 @@ public class AuctionServer extends AbstractServer{
     public boolean finish(String msg) {
         if(msg.equalsIgnoreCase("end")){
             printLog();
-            return false;
-        }else{
             return true;
+        }else{
+            return false;
         }
     }
 

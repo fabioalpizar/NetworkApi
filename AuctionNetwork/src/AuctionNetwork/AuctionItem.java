@@ -12,6 +12,7 @@ package AuctionNetwork;
 public class AuctionItem {
     private String name;
     private String description;
+    private String itemLink;
     private double initialPrice;
     private double finalPrice;
 
@@ -47,11 +48,27 @@ public class AuctionItem {
         this.finalPrice = finalPrice;
     }
 
-    public AuctionItem(String name, String description, double initialPrice) {
+    public String getItemLink() {
+        return itemLink;
+    }
+
+    public void setItemLink(String itemLink) {
+        this.itemLink = itemLink;
+    }
+    
+    public String toStringItemLink() {
+        String str = "Name: " + this.getName()
+                    + "\n Description: " + this.getDescription()
+                    + "\n Image: " + this.getItemLink();
+        return str;
+    }
+    
+    public AuctionItem(String name, String description, double initialPrice, String itemLink) {
         this.name = name;
         this.description = description;
         this.initialPrice = initialPrice;
         this.finalPrice = initialPrice;
+        this.itemLink = itemLink;
     }
     
     
