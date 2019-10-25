@@ -71,10 +71,13 @@ public class Seguidor implements IObserver{
                 artista = (Artista) source;
                 System.out.println("*===================================*\n"
                         + "Artista: " + artista.getNombre() + "\n"
-                        + "Alcanzó el nuevo hito de " + artista.getSeguidores().size() + " seguidores");
+                        + "Alcanzó el nuevo hito de: " + artista.getSeguidores().size() + " seguidores");
                 break;
             case "levelDown":
-                System.out.println("level down");
+                artista = (Artista) source;
+                System.out.println("*===================================*\n"
+                        + "Artista: " + artista.getNombre() + "\n"
+                        + "Disminuyó de n9vel con: " + artista.getSeguidores().size() + " seguidores");
                 break;
             case "nuevoMensaje":
                 mensaje = (Mensaje) source;
@@ -87,7 +90,7 @@ public class Seguidor implements IObserver{
                 System.out.println("*===================================*\nEl post:\n"
                         + mensaje.getMensaje()  + "\n"
                         + "Artista: " + mensaje.getArtista().getNombre() + "\n"
-                        + "Alcanzó el nuevo hito de " + mensaje.getLikes() + " likes.");
+                        + "Alcanzó el nuevo hito de: " + mensaje.getLikes() + " likes.");
                 break;
         }
     }

@@ -22,7 +22,7 @@ public class SeguidorClient1 {
         
         Client cliente = new Client(seguidor);
         cliente.startClient();
-
+        
     }
     
 }

@@ -21,6 +21,8 @@ public class ArtistaClient1 {
         
         Client cliente = new Client(artista);
         cliente.startClient();
+        
+        artista.nuevoMensaje("Hello friend");
 
     }
     

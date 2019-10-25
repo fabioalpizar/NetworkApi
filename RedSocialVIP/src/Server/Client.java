@@ -9,6 +9,7 @@ import RedSocial.Artista;
 import RedSocial.Mensaje;
 import RedSocial.Seguidor;
 import Server.AbstractClient;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,12 +36,23 @@ public class Client extends AbstractClient {
     
     @Override
     public String evaluate(String msg) {
-        if(isArtista) {
-            
-        } else {
+        String reply = "";
+        Gson gson = new Gson();
+        if(msg.equalsIgnoreCase("join")){
+            if(isArtista) {
+                String jsonString = gson.toJson(this.artista);
+                reply = "addA-" + jsonString;
+                return reply;
+            } else {
+                String jsonString = gson.toJson(this.seguidor);
+                reply = "addS-" + jsonString;
+                return reply;
+            }
+        } else if (msg.equalsIgnoreCase("added")){
+            reply = "Joined succesfully";
             
         }
-        return msg;
+        return reply;
     }
 
     @Override

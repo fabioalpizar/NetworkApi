@@ -9,6 +9,7 @@ import RedSocial.Artista;
 import RedSocial.Mensaje;
 import RedSocial.Seguidor;
 import Server.AbstractServer;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
@@ -50,12 +51,25 @@ public class NetworkServer extends AbstractServer {
     @Override
     public String evaluate(String msg) {
         String response = "";
-        switch(msg) {
+        Gson gson = new Gson();
+        String[] initMsg = msg.split("-");
+        String command = initMsg[0];
+        switch(command) {
             case "follow":
                 response = "seguir";
                 break;
             case "salir":
                 response = "salir";
+                break;
+            case "addA":
+                Artista artista = gson.fromJson(initMsg[1], Artista.class);
+                artistas.put(artista.getUsuario(), artista);
+                response = "added";
+                break;
+            case "addS":
+                Seguidor seguidor = gson.fromJson(initMsg[1], Seguidor.class);
+                seguidores.put(seguidor.getUsuario(), seguidor);
+                response = "added";
                 break;
         }
         return response;
